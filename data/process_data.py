@@ -1,5 +1,7 @@
 import sys
 import pandas as pd
+from sqlalchemy import create_engine
+
 
 def load_data(messages_filepath, categories_filepath):
     '''Loads messages and categories from 2 different csv files and merges them into one DataFrame'''   
@@ -33,12 +35,11 @@ def clean_data(df):
     return df
 
 
-
 def save_data(df, database_filename):
-    pass
+    '''Save the clean dataset into an sqlite database'''
 
-
-
+    engine = create_engine(f'sqlite:///{database_filename}')
+    df.to_sql('messages', engine, index=False, if_exists='replace')
 
 
 
