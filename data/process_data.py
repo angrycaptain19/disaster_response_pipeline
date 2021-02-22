@@ -1,8 +1,12 @@
 import sys
-
+import pandas as pd
 
 def load_data(messages_filepath, categories_filepath):
-    pass
+    '''Loads messages and categories from 2 different csv files and merges them into one DataFrame'''   
+    messages = pd.read_csv(messages_filepath)
+    categories = pd.read_csv(categories_filepath)
+    df = messages.merge(categories, on='id')
+    return df
 
 
 def clean_data(df):
