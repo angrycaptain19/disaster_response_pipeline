@@ -10,11 +10,36 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
-    pass
+    '''Splits categories into separate columns with one-hot encoding and removes duplicates'''
+
+    # Split categories into separate category columns
+    categories = df.categories.str.split(';', expand=True)
+
+    # Create category column names by extracting up to second last character from each string in first row
+    category_colnames = categories.iloc[0,].str[:-2]
+    categories.columns = category_colnames
+
+    # Convert category values to numbers 0 or 1
+    for column in categories:
+        categories[column] = categories[column].str[-1:].astype(int) 
+    
+    # Replace categories column in df with new category columns
+    df.drop(columns=['categories'], inplace=True)
+    df = df.merge(categories, left_index=True, right_index=True)   
+
+    # Remove duplicates
+    df.drop_duplicates(inplace=True) 
+
+    return df
+
 
 
 def save_data(df, database_filename):
-    pass  
+    pass
+
+
+
+
 
 
 def main():
